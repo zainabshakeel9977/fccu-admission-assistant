@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+
+pymupdf
+beautifulsoup4
+requests
+
+llama-index
+sentence-transformers
+
+qdrant-client
+
+pillow
+pytesseract
