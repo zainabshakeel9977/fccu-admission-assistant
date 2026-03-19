@@ -1,13 +1,16 @@
 from fastapi import FastAPI
+from app.routes.query import router
+
 
 # Create a FastAPI application instance
 app = FastAPI(title="FCCU Admission Assistant")
+app.include_router(router)
 
-# Define a GET endpoint at the root path "/"
-@app.get("/")
-def health_check():
-    # Return a simple JSON response confirming the server is running
-    return {"status":"ok"}
+# # Define a GET endpoint at the root path "/"
+# @app.get("/")
+# def health_check():
+#     # Return a simple JSON response confirming the server is running
+#     return {"status":"ok"}
 
 
 #############################################################

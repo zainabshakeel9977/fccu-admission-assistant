@@ -12,3 +12,6 @@ qdrant-client
 
 pillow
 pytesseract
+
+groq
+langchain_text_splitter
