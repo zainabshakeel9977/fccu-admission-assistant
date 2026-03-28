@@ -1,26 +1,31 @@
-from ingestion.config import DocumentChunk
-import requests
+import cloudscraper
 from bs4 import BeautifulSoup
 
-def load_webpage(url: str, program: str) -> DocumentChunk:
-    """
-    Load a webpage, extract visible text, and return as a DocumentChunk.
-    """
+def load_webpage_robust(url: str, program: str):
+    # Create a scraper instance
+    scraper = cloudscraper.create_scraper() 
+    
+    try:
+        # Use scraper instead of requests
+        response = scraper.get(url, timeout=15)
+        
+        if response.status_code == 403:
+            print("Still blocked by 403. The server is very strict.")
+            return None
 
-    # Send a GET request to the URL to fetch webpage content
-    response = requests.get(url)
-    #  Parse the HTML content using BeautifulSoup
-    # "html.parser" is Python's built-in parser
-    soup = BeautifulSoup(response.text, "html.parser")
+        soup = BeautifulSoup(response.text, "html.parser")
+        
+        # Clean up navigation and footer 'garbage'
+        for element in soup(["script", "style", "nav", "footer", "header"]):
+            element.decompose()
 
-    # Extract all visible text from the HTML
-    # separator=" " ensures words are separated by spaces
-    # strip=True removes leading/trailing whitespace
-    webpage_text = soup.get_text(separator=" ", strip = True)
-    # Create metadata for this webpage chunk
-    webpage_metadata = {"program_level":program,
-                         "source_type":"web",
-                         "source_url":url}
-    #Wrap the text and metadata into a DocumentChunk
-    return DocumentChunk(text=webpage_text, metadata=webpage_metadata)
+        webpage_text = soup.get_text(separator=" ", strip=True)
+        print(f"Success! Extracted {len(webpage_text)} chars.")
+        print(webpage_text)
+        return webpage_text
 
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+load_webpage_robust("https://www.fccollege.edu.pk/postgraduate-in-chemistry/", "bachelors")

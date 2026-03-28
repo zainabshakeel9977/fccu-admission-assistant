@@ -1,10 +1,19 @@
 from fastapi import FastAPI
 from app.routes.query import router
 
-
 # Create a FastAPI application instance
 app = FastAPI(title="FCCU Admission Assistant")
 app.include_router(router)
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # # Define a GET endpoint at the root path "/"
 # @app.get("/")
