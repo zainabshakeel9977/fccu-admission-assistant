@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.models.schema import QueryRequest, QueryResponse
-from app.services.retriever import retrieve_chunks, build_context
+from app.services.retriever import retrieve_chunks, build_context, filter_by_score
 from app.services.llm import generate_answer
 
 # Create a router instance to group related endpoints
@@ -26,9 +26,13 @@ def query_endpoint(request: QueryRequest):
             "answer":"I could not find relevant information. Please contact FCCU Admission Office",
             "sources":[]
         }
+    else:
+        relevant_results = filter_by_score(results)
+        if len(relevant_results)<=2:
+            relevant_results = results[:3]
     
     # Step 3: Build LLM-ready context and extract source references
-    context, sources = build_context(results.points)
+    context, sources = build_context(relevant_results)
     # Step 4: Generate an answer using the LLM
     answer = generate_answer(request.question, context)
     

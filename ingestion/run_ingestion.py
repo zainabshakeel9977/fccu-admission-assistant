@@ -33,7 +33,7 @@ def main():
     documents_list = []
     
     # ---------- Load PDFs ----------
-    pdf_directory = Path(r"data\raw\pdfs")
+    pdf_directory = Path(r"D:\fccu-admission-assistant\data\raw\pdfs")
     for pdf in pdf_directory.glob("*.pdf"): # Iterate over all PDF files
 
         pdf_title = pdf.name
@@ -50,7 +50,7 @@ def main():
     
 
     # ---------- Load Images ----------
-    image_directory = Path(r"data\raw\images")
+    image_directory = Path(r"D:\fccu-admission-assistant\data\raw\images")
 
     for img in image_directory.glob("*"): # Iterate over all image files
 
@@ -65,7 +65,7 @@ def main():
         documents_list.extend(load_image(img,program))
 
     # ---------- Load Web Pages ----------
-    with open(r"data\raw\urls.txt", "r") as file:
+    with open(r"D:\fccu-admission-assistant\data\raw\urls.txt", "r") as file:
         program_level = "bachelors" # Default program level
         for line in file:
             line = line.strip()
