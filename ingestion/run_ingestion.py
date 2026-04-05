@@ -1,3 +1,4 @@
+
 import sys
 from pathlib import Path
 
@@ -88,6 +89,9 @@ def main():
     embedder = EmbeddingModel()
     chunks_text = [chunk.text  for chunk in chunks] # Extract plain text
     embeddings = embedder.embed(chunks_text)
+
+    print(f"Embeddings count: {len(embeddings)}")
+    
     
     #Connect to Qdrant vector database and ensure the collection exists
     client = get_qdrant_client()
@@ -103,8 +107,8 @@ def main():
        points = [
            {
                "id":idx, 
-               "vector":embeddings[idx], 
-               "payload": chunks[idx].metadata | {"text": chunks[idx].text}
+               "vector":embeddings[idx],
+               "payload": chunks[idx].metadata | {"text": chunks[idx].text},
            }
            for idx in range(len(chunks))
        ]

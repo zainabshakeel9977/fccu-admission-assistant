@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.models.schema import QueryRequest, QueryResponse
-from app.services.retriever import retrieve_chunks, build_context, filter_by_score
+from app.services.retriever import retrieve_chunks, build_context, filter_by_score, rerank_chunks
 from app.services.llm import generate_answer
 
 # Create a router instance to group related endpoints
@@ -27,9 +27,16 @@ def query_endpoint(request: QueryRequest):
             "sources":[]
         }
     else:
-        relevant_results = filter_by_score(results)
-        if len(relevant_results)<=2:
-            relevant_results = results[:3]
+       
+        reranked_results = rerank_chunks(request.question, results)
+        #Filter results based on a relevance score threshold
+        relevant_results = filter_by_score(reranked_results)
+        #If too few high-quality results remain,
+        # fall back to the top 3 original results
+        if len(relevant_results)<2:
+            relevant_results = reranked_results[:2]
+        
+        
     
     # Step 3: Build LLM-ready context and extract source references
     context, sources = build_context(relevant_results)

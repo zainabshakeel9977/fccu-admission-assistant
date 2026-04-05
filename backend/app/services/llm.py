@@ -50,10 +50,18 @@ def generate_answer(question: str, context: str):
     - Use bullet points where appropriate
     - Do not add unnecessary explanations
     - Do not repeat the question
-   
-    6. CONTEXT USAGE
-    Base your answer strictly on the CONTEXT section below.
-    If multiple relevant pieces exist, combine them carefully without adding new information.
+
+
+    5. CONTEXT USAGE
+    - Use only relevant parts of the context
+    - Do NOT include irrelevant details
+    - If multiple pieces are relevant, combine them carefully without adding new information
+
+    6. PARTIAL ANSWERS
+    If only part of the answer is available:
+    - Provide the available information clearly
+    - Then state that complete information is not available in the provided sources
+
 
     --------------------- 
     CONTEXT:

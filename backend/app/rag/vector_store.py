@@ -27,7 +27,8 @@ def ensure_collection(client):
                                  COLLECTION_NAME, vectors_config = VectorParams
                                  # Dimension of the embedding vector
                 # Must match the embedding model (384 for all-MiniLM-L6-v2)
-                                 (size = 384, distance = Distance.COSINE)) # Distance metric used for similarity search
+                                 (size = 384, distance = Distance.COSINE),# Distance metric used for similarity search
+                                 ) 
 
 
 client = get_qdrant_client()
